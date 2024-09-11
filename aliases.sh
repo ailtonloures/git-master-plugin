@@ -1,5 +1,6 @@
 #!/bin/bash
 
+alias gmaster="./git-master.sh"
 alias gpush="git push"
 alias gpusho="git push -u origin"
 alias gpick="git cherry-pick"
