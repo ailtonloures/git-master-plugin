@@ -1,0 +1,15 @@
+#!/bin/bash
+
+alias gpush="git push"
+alias gpusho="git push -u origin"
+alias gpick="git cherry-pick"
+alias gp="git pull"
+alias gm="git merge"
+alias gst="git status"
+alias grmt="git remote"
+alias gadd="git add"
+alias gcmt="git commit"
+alias gb="git branch"
+alias gck="git checkout"
+alias gstash="git stash"
+alias gf="git fetch"
