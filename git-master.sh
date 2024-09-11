@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# colors
-error="\033[1;31m"
-success="\033[0;32m"
-info="\033[0;36m"
+source ./git-master-colors.sh
+source ./git-master-functions.sh
 
 if [ -t 0 ]; then
     echo -e "\nInitializing the Git Master..."
@@ -22,5 +20,27 @@ if [ -t 0 ]; then
         exit 1
     fi
 
-    echo -e "\n$success""Git Master finished successfully!"
+    echo -e "\nListing all branches on your remote\n"
+
+    branches=$(git branch --remotes --list | grep -vE "master|main|HEAD")
+    branches_opt=($branches "Exit")
+
+    PS3="Enter the number of your choice: "
+
+    select opt in "${branches_opt[@]}"; do
+        case $opt in
+        "Exit")
+            echo -e "\n$success""Git Master finished successfully!"
+            exit 0
+            break
+            ;;
+        *)
+            if [ -z "$opt" ]; then
+                echo -e "\n$error""Invalid option""$default\n"
+            fi
+
+            merge_branch $opt
+            ;;
+        esac
+    done
 fi
