@@ -21,4 +21,6 @@ if [ -t 0 ]; then
         echo -e "\n$info""Please, use git remote add origin <newurl> to set the remote"
         exit 1
     fi
+
+    echo -e "\n$success""Git Master finished successfully!"
 fi
