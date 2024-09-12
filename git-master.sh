@@ -31,7 +31,7 @@ if [ -t 0 ]; then
     fi
 
     branches=$(git branch --all --list | grep -vE "master|main|HEAD")
-    branches_opt=($branches "Push" "Finish" "Exit")
+    branches_opt=($branches "Push current branch" "Finish merged branches" "Exit")
 
     if [ -z "$branches" ]; then
         echo -e "\n$warning""There are no branches available to merge."
@@ -43,11 +43,11 @@ if [ -t 0 ]; then
 
     select opt in "${branches_opt[@]}"; do
         case $opt in
-        "Push")
+        "Push current branch")
             push_branch $current_branch
             exit 0
             ;;
-        "Finish")
+        "Finish merged branches")
             delete_branch $current_branch
             exit 0
             ;;
