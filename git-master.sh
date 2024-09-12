@@ -3,6 +3,15 @@
 source $(dirname $0)/git-master-message.sh
 source $(dirname $0)/git-master-functions.sh
 
+string_to_lower_case() {
+    echo $1 | tr '[:upper:]' '[:lower:]' # transform string to lower case
+}
+
+confirmation_input() {
+    local question=$1
+    read -p "-> $question (y/n): " response # ask for confirmation
+}
+
 if [ -t 0 ]; then
     current_branch=$(git branch --show-current) # get the current branch
 
@@ -10,7 +19,7 @@ if [ -t 0 ]; then
 
     if [ ! -d ".git" ]; then # checks if repository has been initialized
         show_danger_msg "Error: The git repository not configured properly."
-        show_info_msg "Please, use git init to initialize a new git repository..."
+        show_info_msg "Please use git init to initialize a new git repository..."
         exit 1 # exit with generic error
     fi
 
@@ -18,7 +27,7 @@ if [ -t 0 ]; then
 
     if [ -z "$git_remote" ]; then # check if remote exists
         show_danger_msg "Error: Remote repository address is not configured."
-        show_info_msg "Please, use git remote add origin <newurl> to set the remote."
+        show_info_msg "Please use git remote add origin <newurl> to set the remote."
         exit 1 # exit with generic error code
     fi
 
@@ -55,10 +64,50 @@ if [ -t 0 ]; then
             else
                 echo -e "-> Merged branches:\n"
 
-                for branch in "${merged_branches_list[@]}"; do # show the branches from the merged branch list
-                    echo -e "\t- $branch\n"
+                for i in "${!merged_branches_list[@]}"; do   # get the index from the merged branch list
+                    local branch=${merged_branches_list[$i]} # get the branch name from index
+                    local index=$(expr $i + 1)               # get the index and increment
+
+                    echo -e "\t$index - $branch\n"
                 done
-                break
+
+                while true; do # Push option
+                    confirmation_input "Do you want to push the current branch ($current_branch)?"
+                    response=$(string_to_lower_case $response)
+
+                    if [ $response != "y" ] && [ $response != "n" ]; then # check if answer is not equal to 'y' or 'n'
+                        show_warning_msg "Incorrect answer. Please type 'y (yes)' or 'n (no)'."
+                    elif [ $response = "y" ]; then # check if the answer is equal to “y
+                        show_info_msg "You choose 'y (yes)' to push current branch."
+
+                        push_branch $current_branch
+                        break
+                    else
+                        show_info_msg "You choose 'n (no)' to push current branch."
+                        echo "-> wait"
+                        break
+                    fi
+                done
+
+                while true; do # Delete option
+                    confirmation_input "Do you want to delete the merged branches?"
+                    response=$(string_to_lower_case $response)
+
+                    if [ $response != "y" ] && [ $response != "n" ]; then # check if answer is not equal to 'y' or 'n'
+                        show_warning_msg "Incorrect answer. Please type 'y (yes)' or 'n (no)'."
+                    elif [ $response = "y" ]; then # check if the answer is equal to “y
+                        show_info_msg "You choose 'y (yes)' to delete merged branches."
+
+                        for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
+                            delete_branch $branch
+                        done
+                        break
+                    else
+                        show_info_msg "You choose 'n (no)' to delete merged branches."
+                        echo "-> wait"
+                        break
+                    fi
+                done
             fi
             ;;
         "Exit")

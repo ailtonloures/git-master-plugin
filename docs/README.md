@@ -19,6 +19,7 @@ Git Master
 - Pull
 - Merge
 - Push
+- Delete
 - Tags
 
 ## License
