@@ -1,9 +1,9 @@
 <div align="center">
  <h1>
 <br/>
-  <img src="./../assets/git-icon.png" alt="Git" width="100">
+  <img src="./assets/git-icon.png" alt="Git" width="100">
   <span>+</span>
-  <img src="./../assets/terminal-icon.png" alt="Shell" width="100">
+  <img src="./assets/terminal-icon.png" alt="Shell" width="100">
 <br/>
 <br/>
 Git Master
@@ -19,8 +19,8 @@ Git Master
 - Pull
 - Merge
 - Push
-- Delete
 - Tags
+- Delete
 
 ## License
 

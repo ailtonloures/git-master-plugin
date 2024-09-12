@@ -1,16 +1,7 @@
 #!/bin/bash
 
-source $(dirname $0)/git-master-message.sh
-source $(dirname $0)/git-master-functions.sh
-
-string_to_lower_case() {
-    echo $1 | tr '[:upper:]' '[:lower:]' # transform string to lower case
-}
-
-confirmation_input() {
-    local question=$1
-    read -p "-> $question (y/n): " response # ask for confirmation
-}
+source $(dirname $0)/message.sh
+source $(dirname $0)/functions.sh
 
 if [ -t 0 ]; then
     current_branch=$(git branch --show-current) # get the current branch
@@ -71,43 +62,26 @@ if [ -t 0 ]; then
                     echo -e "\t$index - $branch\n"
                 done
 
-                while true; do # Push option
-                    confirmation_input "Do you want to push the current branch ($current_branch)?"
-                    response=$(string_to_lower_case $response)
+                question "Do you want to push the current branch ($current_branch)?"
 
-                    if [ $response != "y" ] && [ $response != "n" ]; then # check if answer is not equal to 'y' or 'n'
-                        show_warning_msg "Incorrect answer. Please type 'y (yes)' or 'n (no)'."
-                    elif [ $response = "y" ]; then # check if the answer is equal to “y
-                        show_info_msg "You choose 'y (yes)' to push current branch."
+                if [ $? -eq 0 ]; then # check if user wants to push the current branch
+                    push_branch $current_branch
+                fi
 
-                        push_branch $current_branch
-                        break
-                    else
-                        show_info_msg "You choose 'n (no)' to push current branch."
-                        echo "-> wait"
-                        break
-                    fi
-                done
+                question "Do you want to create a new tag?"
 
-                while true; do # Delete option
-                    confirmation_input "Do you want to delete the merged branches?"
-                    response=$(string_to_lower_case $response)
+                if [ $? -eq 0 ]; then  # check if user wants to create a new tag
+                    input "Tag name: " # get the tag name
+                    create_and_push_tags $value
+                fi
 
-                    if [ $response != "y" ] && [ $response != "n" ]; then # check if answer is not equal to 'y' or 'n'
-                        show_warning_msg "Incorrect answer. Please type 'y (yes)' or 'n (no)'."
-                    elif [ $response = "y" ]; then # check if the answer is equal to “y
-                        show_info_msg "You choose 'y (yes)' to delete merged branches."
+                question "Do you want to delete the merged branches?"
 
-                        for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
-                            delete_branch $branch
-                        done
-                        break
-                    else
-                        show_info_msg "You choose 'n (no)' to delete merged branches."
-                        echo "-> wait"
-                        break
-                    fi
-                done
+                if [ $? -eq 0 ]; then                              # check if user wants to delete the merged branches
+                    for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
+                        delete_branch $branch
+                    done
+                fi
             fi
             ;;
         "Exit")
