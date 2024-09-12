@@ -1,12 +1,12 @@
 #!/bin/bash
 
-source ./git-master-message.sh
-source ./git-master-functions.sh
+source $(dirname $0)/git-master-message.sh
+source $(dirname $0)/git-master-functions.sh
 
 if [ -t 0 ]; then
     current_branch=$(git branch --show-current) # get the current branch
 
-    echo -e "!Initializing the Git Master on branch $color_info$current_branch$color_default!"
+    echo -e "\n!Initializing the Git Master on branch $color_info$current_branch$color_default!\n"
 
     if [ ! -d ".git" ]; then # checks if repository has been initialized
         show_danger_msg "Error: The git repository not configured properly."
@@ -32,23 +32,23 @@ if [ -t 0 ]; then
         exit $git_fetch_error_code # exit with git fetch error code
     fi
 
-    branches=$(git branch --all --list | grep -vE "master|main|HEAD") # list all branches except the master, main and HEAD
-    branches_opt=($branches "Finish merge" "Exit")                    # create list of options
-    merged_branches_list=()                                           # merged branches list will start empty
+    branches=$(git branch --all --list '*feature*' --list '*hotfix*' --list '*fix*' --list '*release*') # list all branches (feature/hotfix/fix/release)
+    branches_opt=($branches "Finish merge" "Exit")                                                      # create list of options
+    merged_branches_list=()                                                                             # merged branches list will start empty
 
     if [ -z "$branches" ]; then # check if branch list is empty
         show_warning_msg "There are no branches available to merge."
         exit 1 # exit with generic error code
     fi
 
-    echo "-> Listing all branches..."
+    echo -e "-> Listing all branches...\n"
     PS3="Enter the number of your choice: " # select input
 
     select opt in "${branches_opt[@]}"; do # list all selectable branches
         case $opt in
         "Finish merge")
             # Finish merge option
-            echo "-> Finishing the merge step..."
+            echo -e "\n-> Finishing the merge step..."
 
             if [ ${#merged_branches_list[@]} -eq 0 ]; then # check if has merged branches on list
                 show_warning_msg "No branch has been merged."
@@ -56,7 +56,7 @@ if [ -t 0 ]; then
                 echo -e "-> Merged branches:\n"
 
                 for branch in "${merged_branches_list[@]}"; do # show the branches from the merged branch list
-                    echo -e "\t$branch\n"
+                    echo -e "\t- $branch\n"
                 done
                 break
             fi
