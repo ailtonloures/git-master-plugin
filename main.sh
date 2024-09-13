@@ -82,6 +82,8 @@ if [ -t 0 ]; then
                         delete_branch $branch
                     done
                 fi
+
+                break
             fi
             ;;
         "Exit")
