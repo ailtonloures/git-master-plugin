@@ -6,7 +6,7 @@
   <img src="./assets/terminal-icon.png" alt="Shell" width="100">
 <br/>
 <br/>
-Git Master
+Git Master Plugin
 </h1>
 <p>The essential tool to boost your Git Workflow</p>
 
@@ -40,6 +40,10 @@ First, clone the project in your command line:
 # Clone this repository
 $ git clone https://github.com/ailtonloures/git-master-plugin.git
 ```
+
+#### Or manual download
+
+[Go to latest](https://github.com/ailtonloures/git-master-plugin/releases/latest)
 
 ### Initializing
 
