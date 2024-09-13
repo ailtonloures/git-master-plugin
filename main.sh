@@ -55,9 +55,9 @@ if [ -t 0 ]; then
             else
                 echo -e "-> Merged branches:\n"
 
-                for i in "${!merged_branches_list[@]}"; do   # get the index from the merged branch list
-                    local branch=${merged_branches_list[$i]} # get the branch name from index
-                    local index=$(expr $i + 1)               # get the index and increment
+                for i in "${!merged_branches_list[@]}"; do # get the index from the merged branch list
+                    branch=${merged_branches_list[$i]}     # get the branch name from index
+                    index=$(expr $i + 1)                   # get the index and increment
 
                     echo -e "\t$index - $branch\n"
                 done
