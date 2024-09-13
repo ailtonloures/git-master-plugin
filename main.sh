@@ -33,7 +33,7 @@ if [ -t 0 ]; then
     fi
 
     branches=$(git branch --all --list '*feature*' --list '*hotfix*' --list '*fix*' --list '*release*') # list all branches (feature/hotfix/fix/release)
-    branches_opt=($branches "Finish merge" "Exit")                                                      # create list of options
+    branches_opt=($branches "Exit")                                                                     # create list of options
     merged_branches_list=()                                                                             # merged branches list will start empty
 
     if [ -z "$branches" ]; then # check if branch list is empty
@@ -46,49 +46,10 @@ if [ -t 0 ]; then
 
     select opt in "${branches_opt[@]}"; do # list all selectable branches
         case $opt in
-        "Finish merge")
-            # Finish merge option
-            echo -e "\n-> Finishing the merge step..."
-
-            if [ ${#merged_branches_list[@]} -eq 0 ]; then # check if has merged branches on list
-                show_warning_msg "No branch has been merged."
-            else
-                echo -e "-> Merged branches:\n"
-
-                for i in "${!merged_branches_list[@]}"; do # get the index from the merged branch list
-                    branch=${merged_branches_list[$i]}     # get the branch name from index
-                    index=$(expr $i + 1)                   # get the index and increment
-
-                    echo -e "\t$index - $branch\n"
-                done
-
-                question "Do you want to push the current branch ($current_branch)?"
-
-                if [ $? -eq 0 ]; then # check if user wants to push the current branch
-                    push_branch $current_branch
-                fi
-
-                question "Do you want to create a new tag?"
-
-                if [ $? -eq 0 ]; then  # check if user wants to create a new tag
-                    input "Tag name: " # get the tag name
-                    create_and_push_tags $value
-                fi
-
-                question "Do you want to delete the merged branches?"
-
-                if [ $? -eq 0 ]; then                              # check if user wants to delete the merged branches
-                    for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
-                        delete_branch $branch
-                    done
-                fi
-            fi
-            ;;
         "Exit")
             # Exit option
-            show_success_msg "Git Master finished successfully!"
+            show_success_msg "Leaving..."
             exit 0 # exit with success code
-            break
             ;;
         *)
             # Default option
@@ -100,8 +61,53 @@ if [ -t 0 ]; then
                 show_success_msg "Merged branch $target_branch successfully!"
 
                 merged_branches_list+=("$target_branch") # add the target branch to merged branches list
+
+                question "Do you want to continue?"
+
+                if [ $? -eq 0 ]; then # check if user wants to delete the merged branches
+                    echo -e "-> Finishing the merge step..."
+                    break
+                fi
             fi
             ;;
         esac
     done
+
+    if [ ${#merged_branches_list[@]} -eq 0 ]; then # check if has merged branches on list
+        show_warning_msg "No branch has been merged."
+        exit 1 # exit with generic error code
+    else
+        echo -e "-> Merged branches:\n"
+
+        for i in "${!merged_branches_list[@]}"; do # get the index from the merged branch list
+            branch=${merged_branches_list[$i]}     # get the branch name from index
+            index=$(expr $i + 1)                   # get the index and increment
+
+            echo -e "\t$index - $branch\n"
+        done
+
+        question "Do you want to push the current branch ($current_branch)?"
+
+        if [ $? -eq 0 ]; then # check if user wants to push the current branch
+            push_branch $current_branch
+        fi
+
+        question "Do you want to create a new tag?"
+
+        if [ $? -eq 0 ]; then  # check if user wants to create a new tag
+            input "Tag name: " # get the tag name
+            create_and_push_tags $value
+        fi
+
+        question "Do you want to delete the merged branches?"
+
+        if [ $? -eq 0 ]; then                              # check if user wants to delete the merged branches
+            for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
+                delete_branch $branch
+            done
+        fi
+    fi
+
+    show_success_msg "Git Master finished successfully!"
+    exit 0
 fi

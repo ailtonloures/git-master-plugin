@@ -1,48 +1,11 @@
 #!/bin/bash
 
-merge_branch() {
-    local current_branch=$1
-    local target_branch=$2
-
-    echo -e "\n-> Pulling remote updates..."
-
-    git checkout $target_branch
-    git pull
-    git checkout $current_branch
-    git pull
-
-    echo -e "\n-> Merging branch $target_branch..."
-
-    git merge --no-ff $target_branch
+break_line() {
+    echo -e "\n"
 }
 
-push_branch() {
-    local branch=$1
-
-    echo "-> Pushing branch $branch to remote..."
-
-    git push -u $git_remote $branch
-}
-
-delete_branch() {
-    local branch=$1
-
-    echo "-> Deleting branch $branch from local..."
-
-    git branch -D $branch
-}
-
-create_and_push_tags() {
-    local tag=$1
-
-    echo "-> Creating tag $tag..."
-
-    git pull --tags
-    git tag $tag
-
-    echo "-> Pushing to remote..."
-
-    git push $git_remote $tag
+input() {
+    read -p "-> $1" value
 }
 
 question() {
@@ -64,6 +27,45 @@ question() {
     done
 }
 
-input() {
-    read -p "-> $1" value
+merge_branch() {
+    local current_branch=$1
+    local target_branch=$2
+
+    echo -e "\n-> Pulling remote updates...\n"
+    git checkout $target_branch
+    git checkout $current_branch
+
+    echo -e "\n-> Merging branch $target_branch...\n"
+    git merge --no-ff $target_branch
+}
+
+push_branch() {
+    local branch=$1
+
+    echo -e "-> Pushing branch $branch to remote...\n"
+    git push -u $git_remote $branch
+    break_line
+}
+
+delete_branch() {
+    local branch=$1
+
+    echo -e "-> Deleting branch $branch from local...\n"
+    git branch -D $branch
+    break_line
+}
+
+create_and_push_tags() {
+    local tag=$1
+
+    echo -e "-> Pulling remote tags...\n"
+    git pull --tags
+    break_line
+
+    echo -e "-> Creating tag $tag..."
+    git tag $tag
+
+    echo -e "-> Pushing to remote...\n"
+    git push $git_remote $tag
+    break_line
 }

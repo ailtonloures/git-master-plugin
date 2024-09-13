@@ -74,11 +74,10 @@ $ git master
 
 1. Choose a branch to merge with the current branch;
    1. You can select a new branch after the merge process of the previously selected branch.
-2. Choose the “Finish Merge” option;
-3. Confirm that git should push;
-4. Confirm that git should create a new tag;
-5. Confirm that git should remove the local branches;
-6. Finally, choose the “Exit” option to leave;
+2. Confirm that git should push;
+3. Confirm that git should create a new tag;
+4. Confirm that git should remove the local branches;
+5. Finally, the process will end automatically;
 
 ## License
 
