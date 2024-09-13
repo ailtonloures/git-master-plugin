@@ -42,7 +42,7 @@ if [ -t 0 ]; then
     fi
 
     echo -e "-> Listing all branches...\n"
-    PS3="Enter the number of your choice: " # select input
+    PS3="Choose a branch to merge: " # select input
 
     select opt in "${branches_opt[@]}"; do # list all selectable branches
         case $opt in
