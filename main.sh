@@ -76,36 +76,36 @@ if [ -t 0 ]; then
     if [ ${#merged_branches_list[@]} -eq 0 ]; then # check if has merged branches on list
         show_warning_msg "No branch has been merged."
         exit 1 # exit with generic error code
-    else
-        echo -e "-> Merged branches:\n"
+    fi
 
-        for i in "${!merged_branches_list[@]}"; do # get the index from the merged branch list
-            branch=${merged_branches_list[$i]}     # get the branch name from index
-            index=$(expr $i + 1)                   # get the index and increment
+    echo -e "-> Merged branches:\n"
 
-            echo -e "\t$index - $branch\n"
+    for i in "${!merged_branches_list[@]}"; do # get the index from the merged branch list
+        branch=${merged_branches_list[$i]}     # get the branch name from index
+        index=$(expr $i + 1)                   # get the index and increment
+
+        echo -e "\t$index - $branch\n"
+    done
+
+    question "Do you want to push the current branch ($current_branch)?"
+
+    if [ $? -eq 0 ]; then # check if user wants to push the current branch
+        push_branch $current_branch
+    fi
+
+    question "Do you want to create a new tag?"
+
+    if [ $? -eq 0 ]; then  # check if user wants to create a new tag
+        input "Tag name: " # get the tag name
+        create_and_push_tags $value
+    fi
+
+    question "Do you want to delete the merged branches?"
+
+    if [ $? -eq 0 ]; then                              # check if user wants to delete the merged branches
+        for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
+            delete_branch $branch
         done
-
-        question "Do you want to push the current branch ($current_branch)?"
-
-        if [ $? -eq 0 ]; then # check if user wants to push the current branch
-            push_branch $current_branch
-        fi
-
-        question "Do you want to create a new tag?"
-
-        if [ $? -eq 0 ]; then  # check if user wants to create a new tag
-            input "Tag name: " # get the tag name
-            create_and_push_tags $value
-        fi
-
-        question "Do you want to delete the merged branches?"
-
-        if [ $? -eq 0 ]; then                              # check if user wants to delete the merged branches
-            for branch in "${merged_branches_list[@]}"; do # get the branch name from the merged branch list
-                delete_branch $branch
-            done
-        fi
     fi
 
     show_success_msg "Git Master finished successfully!"
