@@ -92,7 +92,7 @@ if [ -t 0 ]; then
         branch=${merged_branches_list[$i]}     # get the branch name from index
         index=$(expr $i + 1)                   # get the index and increment
 
-        echo -e "\t$index - $branch\n"
+        echo -e "\t$index - $branch\r"
     done
 
     question "Do you want to push the current branch ($current_branch)?"
