@@ -56,15 +56,23 @@ if [ -t 0 ]; then
             if [ -z "$opt" ]; then # check if an option does not exist
                 show_danger_msg "Invalid option!"
             else
-                target_branch=$(echo "$opt" | sed -e "s/remotes\/$git_remote\///g") # takes the selected branch and removes the remote information
-                merge_branch $current_branch $target_branch
+                target_branch=$(echo "$opt" | sed -e "s/remotes\///g") # takes the selected branch and removes the remotes information
+
+                merge_branch $target_branch
+                merge_error_code=$? # store the error code from git fetch update
+
+                if [ $merge_error_code -ne 0 ]; then
+                    show_danger_msg "Error: Failed to merge branch $target_branch."
+                    exit $merge_error_code # exit with git merge error code
+                fi
+
                 show_success_msg "Merged branch $target_branch successfully!"
 
                 merged_branches_list+=("$target_branch") # add the target branch to merged branches list
 
                 question "Do you want to continue?"
 
-                if [ $? -eq 0 ]; then # check if user wants to delete the merged branches
+                if [ $? -eq 1 ]; then # check if user doesn't want to continue the merge operation
                     echo -e "-> Finishing the merge step..."
                     break
                 fi
