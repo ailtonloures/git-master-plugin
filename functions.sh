@@ -28,12 +28,7 @@ question() {
 }
 
 merge_branch() {
-    local current_branch=$1
-    local target_branch=$2
-
-    echo -e "\n-> Pulling remote updates...\n"
-    git checkout $target_branch
-    git checkout $current_branch
+    local target_branch=$1
 
     echo -e "\n-> Merging branch $target_branch...\n"
     git merge --no-ff $target_branch
