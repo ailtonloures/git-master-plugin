@@ -39,7 +39,6 @@ push_branch() {
 
     echo -e "-> Pushing branch $branch to remote...\n"
     git push -u $git_remote $branch
-    break_line
 }
 
 delete_branch() {
@@ -51,11 +50,9 @@ delete_branch() {
         cleaned_branch_name=$(echo "$branch" | sed -e "s/$git_remote\///g")
 
         git push $git_remote --delete $cleaned_branch_name
-        break_line
     else
         echo -e "-> Deleting branch $branch from local...\n"
         git branch -D $branch
-        break_line
     fi
 }
 
@@ -64,12 +61,10 @@ create_and_push_tags() {
 
     echo -e "-> Pulling remote tags...\n"
     git pull --tags
-    break_line
 
     echo -e "-> Creating tag $tag..."
     git tag $tag
 
     echo -e "-> Pushing to remote...\n"
     git push $git_remote $tag
-    break_line
 }
