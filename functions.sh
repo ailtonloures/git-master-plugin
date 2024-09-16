@@ -35,17 +35,25 @@ merge_branch() {
 }
 
 check_merge_conflicts() {
+    local index=$1
     local conflicts=$(git status --porcelain)
 
     if [ ! -z "$conflicts" ]; then
-        show_warning_msg "Merge conflicts detected. Please resolve them before pushing."
+        if [ $index -gt 0 ]; then
+            show_warning_msg "There are still unresolved merge conflicts. Please resolve them before sending."
+        else
+            show_warning_msg "Merge conflicts detected. Please resolve them before pushing."
+        fi
 
-        while true; do
-            if [ -z "$conflicts" ]; then
-                show_info_msg "Merge conflicts resolved successfully."
-                return 0
-            fi
-        done
+        question "Can you confirm the resolution of merge conflicts?"
+
+        if [ $? -eq 0 ]; then
+            check_merge_conflicts $((index + 1))
+        else
+            return 1
+        fi
+    elif [ $index -gt 0 ]; then
+        return 0
     else
         return 1
     fi
