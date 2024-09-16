@@ -62,8 +62,12 @@ if [ -t 0 ]; then
                 merge_error_code=$? # store the error code from git fetch update
 
                 if [ $merge_error_code -ne 0 ]; then
-                    show_danger_msg "Error: Failed to merge branch $target_branch."
-                    exit $merge_error_code # exit with git merge error code
+                    check_merge_conflicts # check if existing conflicts
+
+                    if [ $? -eq 1 ]; then
+                        show_danger_msg "Error: Failed to merge branch $target_branch. With error code $merge_error_code"
+                        exit $merge_error_code # exit with git merge error code
+                    fi
                 fi
 
                 show_success_msg "Merged branch $target_branch successfully!"
