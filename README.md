@@ -2,8 +2,6 @@
  <h1>
 <br/>
   <img src="./assets/git-icon.png" alt="Git" width="100">
-  <span>+</span>
-  <img src="./assets/terminal-icon.png" alt="Shell" width="100">
 <br/>
 <br/>
 Git Master Plugin
