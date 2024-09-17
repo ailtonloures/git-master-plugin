@@ -41,7 +41,7 @@ $ git clone https://github.com/ailtonloures/git-master-plugin.git
 
 #### Or manual download
 
-[Go to latest](https://github.com/ailtonloures/git-master-plugin/releases/latest)
+[Go to latest](https://github.com/ailtonloures/git-master-plugin/archive/refs/heads/main.zip)
 
 ### Initializing
 
