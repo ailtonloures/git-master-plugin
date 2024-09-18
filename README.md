@@ -10,6 +10,7 @@ Git Master Plugin
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/ailtonloures/git-master-plugin)
 ![GitHub Release](https://img.shields.io/github/v/release/ailtonloures/git-master-plugin)
+![GitHub License](https://img.shields.io/github/license/ailtonloures/git-master-plugin)
 </div>
 
 ## About
@@ -77,6 +78,8 @@ $ git master
 4. Confirm that git should remove the local branches;
 5. Finally, the process will end automatically;
 
-## License
+## Contributing
 
-[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+Contributions are always welcome, consider opening an issue first and discuss with the community before opening a pull request.
+
+Check out the [CONTRIBUTING.md](./CONTRIBUTING.md).
