@@ -92,6 +92,8 @@ if [ -t 0 ]; then
 		echo -e "\t$index - $branch\r"
 	done
 
+	echo -e "\n"
+
 	question "Do you want to push the current branch ($current_branch)?"
 	question_error_code=$?
 
