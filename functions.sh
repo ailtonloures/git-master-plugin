@@ -5,7 +5,7 @@ break_line() {
 }
 
 question() {
-	readonly ask=$1
+	local ask=$1
 
 	while true; do
 		echo "-> $ask (y/n):"
@@ -25,7 +25,7 @@ question() {
 }
 
 fetch_branches() {
-	readonly git_remote=$1
+	local git_remote=$1
 
 	echo "-> Fetching all branches..."
 
@@ -73,8 +73,8 @@ check_merge_conflicts() {
 }
 
 push_branch() {
-	readonly git_remote=$1
-	readonly branch=$2
+	local git_remote=$1
+	local branch=$2
 
 	echo -e "-> Pushing branch $branch to remote...\n"
 	git push -u "$git_remote" "$branch"
@@ -82,8 +82,8 @@ push_branch() {
 }
 
 delete_branch() {
-	readonly git_remote=$1
-	readonly branch=$2
+	local git_remote=$1
+	local branch=$2
 
 	if [[ $branch == *"$git_remote"* ]]; then
 		echo -e "-> Deleting branch $branch from remote...\n"
@@ -100,8 +100,8 @@ delete_branch() {
 }
 
 create_and_push_tags() {
-	readonly git_remote=$1
-	readonly tag=$2
+	local git_remote=$1
+	local tag=$2
 
 	echo -e "-> Pulling remote tags...\n"
 	git pull --tags
