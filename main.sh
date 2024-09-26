@@ -26,7 +26,7 @@ if [ -t 0 ]; then
 	fetch_branches "$git_remote"
 
 	branches=$(git branch --all --list '*feature*' --list '*hotfix*' --list '*fix*' --list '*release*') # list all branches (feature/hotfix/fix/release)
-	branches_opt=("$branches" "Exit")                                                                   # create list of options
+	branches_opt=($branches "Exit")                                                                     # create list of options
 	merged_branches_list=()                                                                             # merged branches list will start empty
 
 	if [ -z "$branches" ]; then # check if branch list is empty
