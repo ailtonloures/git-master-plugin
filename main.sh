@@ -25,23 +25,31 @@ if [ -t 0 ]; then
 
 	fetch_branches "$git_remote"
 
-	branches=$(git branch --all --list '*feature*' --list '*hotfix*' --list '*fix*' --list '*release*') # list all branches (feature/hotfix/fix/release)
-	branches_opt=($branches "Exit")                                                                     # create list of options
-	merged_branches_list=()                                                                             # merged branches list will start empty
+	git_branch=$(git branch --all --list '*feature*' --list '*hotfix*' --list '*fix*' --list '*release*' | grep -v "^\*") # list all branches (feature/hotfix/fix/release)
 
-	if [ -z "$branches" ]; then # check if branch list is empty
+	if [ -z "$git_branch" ]; then # check if branch list is empty
 		show_warning_msg "There are no branches available to merge."
 		exit 1 # exit with generic error code
 	fi
 
+	branches_list=()        # create list of options
+	merged_branches_list=() # merged branches list will start empty
+
+	for branch in "${git_branch[@]}"; do
+		renamed_branch=$(echo "$branch" | sed -e "s/remotes\/$git_remote\///g")
+		branches_list+=("$renamed_branch")
+	done
+
+	opt_list=($(printf "%s\n" "${branches_list[@]}" | sort | uniq) "Exit")
+
 	echo -e "-> Listing all branches...\n"
 	PS3="Choose a branch to merge: " # select input
 
-	select opt in "${branches_opt[@]}"; do # list all selectable branches
+	select opt in "${opt_list[@]}"; do # list all selectable branches
 		case $opt in
 		"Exit")
 			# Exit option
-			show_success_msg "Leaving..."
+			show_success_msg "Exit..."
 			exit 0 # exit with success code
 			;;
 		*)
@@ -49,7 +57,7 @@ if [ -t 0 ]; then
 			if [ -z "$opt" ]; then # check if an option does not exist
 				show_danger_msg "Invalid option!"
 			else
-				target_branch=$(echo "$opt" | sed -e "s/remotes\///g") # takes the selected branch and removes the remotes information
+				target_branch=$opt
 
 				merge_branch "$target_branch"
 				merge_error_code=$? # store the error code from git fetch update
