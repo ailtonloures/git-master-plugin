@@ -36,7 +36,7 @@ if [ -t 0 ]; then
 	merged_branches_list=() # merged branches list will start empty
 
 	for branch in "${git_branch[@]}"; do
-		renamed_branch=$(echo "$branch" | sed -e "s/remotes\/$git_remote\///g")
+		renamed_branch=$(echo "$branch" | sed -e "s/remotes\///g")
 		branches_list+=("$renamed_branch")
 	done
 
