@@ -104,7 +104,7 @@ create_and_push_tags() {
 	local tag=$2
 
 	echo -e "-> Pulling remote tags...\n"
-	git pull --tags
+	git pull "$git_remote" --tags
 
 	echo -e "-> Creating tag $tag..."
 	git tag "$tag"
