@@ -1,2 +1,5 @@
 # To-do files
 *.todo
+
+# Test file
+test.sh
