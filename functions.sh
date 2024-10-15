@@ -8,18 +8,23 @@ question() {
 	local ask=$1
 
 	while true; do
-		echo "-> $ask (y/n):"
-		read -r response                                          # ask for confirmation
-		response=$(echo "$response" | tr '[:upper:]' '[:lower:]') # transform string to lower case
+		# ask for confirmation
+		read -r -p "-> $ask (y/n):" response
+		# transform string to lower case
+		response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 
-		if [ "$response" != "y" ] && [ "$response" != "n" ]; then # check if answer is not equal to 'y' or 'n'
+		# check if answer is not equal to 'y' or 'n'
+		if [ "$response" != "y" ] && [ "$response" != "n" ]; then
 			show_warning_msg "Incorrect answer. Please type 'y (yes)' or 'n (no)'."
-		elif [ "$response" = "y" ]; then # check if the answer is equal to “y
+		# check if the answer is equal to “y
+		elif [ "$response" = "y" ]; then
 			show_info_msg "You choose 'y (yes)'."
-			return 0 # return 0 when answer is equal to 'y (yes)'
+			# return 0 when answer is equal to 'y (yes)'
+			return 0
 		else
 			show_info_msg "You choose 'n (no)'."
-			return 1 # return 0 when answer is equal to 'n (no)'
+			# return 0 when answer is equal to 'n (no)'
+			return 1
 		fi
 	done
 }
@@ -29,12 +34,16 @@ fetch_branches() {
 
 	echo "-> Fetching all branches..."
 
-	git fetch "$git_remote" # fetch updates from the remote
-	git_fetch_error_code=$? # store the error code from git fetch update
+	# fetch updates from the remote
+	git fetch "$git_remote"
+	# store the error code from git fetch update
+	git_fetch_error_code=$?
 
-	if [ $git_fetch_error_code -ne 0 ]; then # check if git fetch failed
+	# check if git fetch failed
+	if [ $git_fetch_error_code -ne 0 ]; then
 		show_danger_msg "Error: Finished with error code $git_fetch_error_code."
-		exit $git_fetch_error_code # exit with git fetch error code
+		# exit with git fetch error code
+		exit $git_fetch_error_code
 	fi
 }
 
