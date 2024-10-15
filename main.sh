@@ -90,6 +90,7 @@ if [ -t 0 ]; then
 					fi
 				fi
 
+				break_line
 				show_success_msg "Merged branch $target_branch successfully!"
 
 				# add the target branch to merged branches list
@@ -125,6 +126,8 @@ if [ -t 0 ]; then
 
 		echo -e "\t$index - $branch\r"
 	done
+
+	break_line
 
 	question "Do you want to push the current branch ($current_branch)?"
 	question_error_code=$?

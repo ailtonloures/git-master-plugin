@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Utils functions
+
 break_line() {
 	echo -e "\n"
 }
@@ -28,6 +30,8 @@ question() {
 		fi
 	done
 }
+
+# Git functions
 
 fetch_branches() {
 	local git_remote=$1
