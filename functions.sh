@@ -92,11 +92,11 @@ delete_branch() {
 
 		git push "$git_remote" --delete "$cleaned_branch_name"
 		break_line
-	else
-		echo -e "-> Deleting branch $branch from local...\n"
-		git branch -D "$branch"
-		break_line
 	fi
+
+	echo -e "-> Deleting branch $branch from local...\n"
+	git branch -D "$branch"
+	break_line
 }
 
 create_and_push_tags() {
