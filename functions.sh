@@ -2,10 +2,12 @@
 
 # Utils functions
 
+# generate the white space
 break_line() {
 	echo -e "\n"
 }
 
+# create a question prompt
 question() {
 	local ask=$1
 
@@ -33,6 +35,7 @@ question() {
 
 # Git functions
 
+# fetch branches from remote
 fetch_branches() {
 	local git_remote=$1
 
@@ -51,6 +54,7 @@ fetch_branches() {
 	fi
 }
 
+# execute the git merge command
 merge_branch() {
 	local target_branch=$1
 
@@ -58,6 +62,7 @@ merge_branch() {
 	git merge --no-ff "$target_branch"
 }
 
+# check if exists git conflicts recursively
 check_merge_conflicts() {
 	local index=$1
 	local conflicts
@@ -73,7 +78,9 @@ check_merge_conflicts() {
 		question "Can you confirm the resolution of merge conflicts?"
 		question_error_code=$?
 
+		# check if question exited with an error code
 		if [ $question_error_code -eq 0 ]; then
+			# recursive action
 			check_merge_conflicts $((index + 1))
 		else
 			return 1
@@ -85,6 +92,7 @@ check_merge_conflicts() {
 	fi
 }
 
+# execute the git push command
 push_branch() {
 	local git_remote=$1
 	local branch=$2
@@ -94,6 +102,7 @@ push_branch() {
 	break_line
 }
 
+# delete branch from remote and local
 delete_branch() {
 	local git_remote=$1
 	local branch=$2
@@ -112,6 +121,7 @@ delete_branch() {
 	break_line
 }
 
+# create a new tag and push to remote
 create_and_push_tags() {
 	local git_remote=$1
 	local tag=$2
