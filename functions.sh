@@ -107,12 +107,12 @@ delete_branch() {
 	local git_remote=$1
 	local branch=$2
 
-	if [[ $branch == *"$git_remote"* ]]; then
+	branch_hash=$(git ls-remote --heads "$git_remote" "$branch")
+
+	if [ -n "$branch_hash" ]; then
 		echo -e "-> Deleting branch $branch from remote...\n"
 
-		cleaned_branch_name=$(echo "$branch" | sed -e "s/$git_remote\///g")
-
-		git push "$git_remote" --delete "$cleaned_branch_name"
+		git push "$git_remote" --delete "$branch"
 		break_line
 	fi
 
