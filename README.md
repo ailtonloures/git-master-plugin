@@ -52,6 +52,9 @@ Then run the `init.sh` script to initialize the plugin configuration:
 # Go into the repository
 $ cd git-master-plugin
 
+# Turn file into executable
+$ chmod +x init.sh
+
 # Run the `init.sh` script
 $ ./init.sh
 ```
