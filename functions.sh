@@ -42,7 +42,7 @@ fetch_branches() {
 	echo "-> Fetching all branches..."
 
 	# fetch updates from the remote
-	git fetch "$git_remote"
+	git fetch "$git_remote" --prune
 	# store the error code from git fetch update
 	git_fetch_error_code=$?
 
