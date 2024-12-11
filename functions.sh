@@ -52,6 +52,8 @@ fetch_branches() {
 		# exit with git fetch error code
 		exit $git_fetch_error_code
 	fi
+
+	git pull "$git_remote"
 }
 
 # execute the git merge command
