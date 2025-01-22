@@ -137,7 +137,7 @@ if [ -t 0 ]; then
 		push_branch "$git_remote" "$current_branch"
 	fi
 
-	if [ "$current_branch" == "main" ] || [ "$current_branch" == "master" ] || [[ "$current_branch" == *"release"* ]]; then
+	if [ "$current_branch" == "main" ] || [ "$current_branch" == "master" ] || [[ "$current_branch" == *"release"* ]] || [ "$current_branch" == "develop" ]; then
 		question "Do you want to create a new tag?"
 		question_error_code=$?
 
