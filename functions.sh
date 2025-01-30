@@ -118,9 +118,14 @@ delete_branch() {
 		break_line
 	fi
 
-	echo -e "-> Deleting branch $branch from local...\n"
-	git branch -D "$branch"
-	break_line
+	local_branch=$(git branch -l "$branch")
+
+	if [ -n "$local_branch" ]; then
+		echo -e "-> Deleting branch $branch from local...\n"
+
+		git branch -D "$branch"
+		break_line
+	fi
 }
 
 # create a new tag and push to remote
