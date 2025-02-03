@@ -8,7 +8,7 @@ if [ -t 0 ]; then
 	# get the current branch
 	current_branch=$(git branch --show-current)
 
-	echo -e "\n!Initializing the Git Master on branch $current_branch!\n"
+	echo -e "\nInitializing the Git Master on branch $current_branch\n"
 
 	# checks if repository has been initialized
 	if [ ! -d ".git" ]; then
